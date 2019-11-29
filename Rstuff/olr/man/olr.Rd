@@ -47,7 +47,7 @@ olrformulasorder: returns the formulas with the predictors (dependant variables)
 adjr2list: list of the adjusted R-squared terms \cr \cr
 r2list: list of the R-squared terms \cr \cr
 
-A Python version avaiable online at https://pypi.org/project/olr/
+A Python version is available at https://pypi.org/project/olr/.
 }
 \examples{
 \dontrun{
@@ -61,8 +61,6 @@ Afterwards, find the file in the directory. After clicking the file, choose "Yes
 Then, click on "Import"
 
 oildata should now be listed as one of the global variables.
-
-system.file("extdata", "oildata.csv", package = "olr", mustWork = TRUE)
 
 datasetname <- oildata
 resvarname <- 'OilPrices'

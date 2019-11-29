@@ -13,7 +13,7 @@
 #' adjr2list: list of the adjusted R-squared terms \cr \cr
 #' r2list: list of the R-squared terms \cr \cr
 #'
-#' A Python version avaiable online at https://pypi.org/project/olr/
+#' A Python version is available at https://pypi.org/project/olr/.
 #'
 #' @param datasetname is defined by the user and points to the name of the dataset that is being used.
 #' @param resvarname the response variable name defined as a string. For example. It represents a header in the data table.
@@ -33,8 +33,6 @@
 #' Then, click on "Import"
 #'
 #' oildata should now be listed as one of the global variables.
-#'
-#' system.file("extdata", "oildata.csv", package = "olr", mustWork = TRUE)
 #'
 #' datasetname <- oildata
 #' resvarname <- 'OilPrices'
