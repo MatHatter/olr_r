@@ -34,8 +34,8 @@ r2list(datasetname, resvarname, expvarnames)
 The regression summary for the adjusted R-squared or the R-squared, specified with TRUE or FALSE in the olr function.
 }
 \description{
-The olr function runs all of the possible linear regression equation combinations, which is all of the
-combinations of dependent variables in respect to the independent variable. Basically, the olr function
+The main function olr runs all of the possible linear regression equation combinations, which are all of the
+combinations of dependent variables respect to the independent variable. In essence, the olr function
 returns the best fit linear regression model. The user can prompt the olr function to either return the
 best fit statistical summary of either the greatest adjusted R-squared or R-squared term.
 }
@@ -43,11 +43,11 @@ best fit statistical summary of either the greatest adjusted R-squared or R-squa
 Complimentary functions below follow this format: function(datasetname, resvarname, expvarnames) \cr \cr
 olrmodels: returns the list of models accompanied by the coefficients. After typing in olrmodels(datasetname, resvarname, expvarnames) put the number you want to see in the brackets on the right of the comma [,]. For example, olrmodels(datasetname, resvarname, expvarnames)[,1] \cr \cr
 olrformulas: returns the list of olr formulas \cr \cr
-olrformulasorder: returns the formulas with the predictors (dependant variables) in ascending order \cr \cr
+olrformulasorder: returns the formulas with the predictors (dependent variables) in ascending order \cr \cr
 adjr2list: list of the adjusted R-squared terms \cr \cr
 r2list: list of the R-squared terms \cr \cr
 
-A Python version is available at https://pypi.org/project/olr/.
+A Python version is available at <https://pypi.org/project/olr/>.
 }
 \examples{
 \dontrun{
