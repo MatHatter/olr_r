@@ -28,10 +28,10 @@ r2list(datasetname, resvarname, expvarnames)
 
 \item{expvarnames}{is a variable that you must define as a list before your function. Place desired headers from the data table in here as a list.}
 
-\item{adjr2}{adjr2 = TRUE means you want to return the regression summary for the maximum adjusted R-squared term. adjr2 = FALSE means you want to return the regression summary for the maximum R-squared term.}
+\item{adjr2}{\code{adjr2 = TRUE} means you want to return the regression summary for the maximum adjusted R-squared term. \code{adjr2 = FALSE} means you want to return the regression summary for the maximum R-squared term.}
 }
 \value{
-The regression summary for the adjusted R-squared or the R-squared, specified with TRUE or FALSE in the olr function.
+The regression summary for the adjusted R-squared or the R-squared, specified with \code{TRUE} or \code{FALSE} in the olr function.
 }
 \description{
 The main function olr runs all of the possible linear regression equation combinations, which are all of the
@@ -40,20 +40,21 @@ returns the best fit linear regression model. The user can prompt the olr functi
 best fit statistical summary of either the greatest adjusted R-squared or R-squared term.
 }
 \details{
-Complimentary functions below follow this format: function(datasetname, resvarname, expvarnames) \cr \cr
-olrmodels: returns the list of models accompanied by the coefficients. After typing in olrmodels(datasetname, resvarname, expvarnames) put the number you want to see in the brackets on the right of the comma [,]. For example, olrmodels(datasetname, resvarname, expvarnames)[,1] \cr \cr
+Complimentary functions below follow the format: function(datasetname, resvarname, expvarnames) \cr \cr
+olrmodels: returns the list of models accompanied by the coefficients. After typing in \code{olrmodels(datasetname, resvarname, expvarnames)} type the desired summary number to the right of the comma in the brackets: \code{[,x]} where x equals the desired summary number. For example, \code{olrmodels(datasetname, resvarname, expvarnames)[,8]} \cr \cr
 olrformulas: returns the list of olr formulas \cr \cr
 olrformulasorder: returns the formulas with the predictors (dependent variables) in ascending order \cr \cr
 adjr2list: list of the adjusted R-squared terms \cr \cr
 r2list: list of the R-squared terms \cr \cr
 
-A Python version is available at <https://pypi.org/project/olr/>.
+\emph{A Python version is available at} <https://pypi.org/project/olr/>.
 }
 \examples{
 \dontrun{
-For this example, 'Import Dataset' from this location: ../olr/insta/extdata
 
-Or use the function to find the location:
+#For this example, 'Import Dataset' from the location: ../olr/insta/extdata
+
+Or use this function to find the location:
 system.file("extdata", "oildata.csv", package = "olr", mustWork = TRUE)
 
 Go to "Environment" and go to "Import Dataset". Then choose "From Text (base)...".
@@ -62,10 +63,15 @@ Then, click on "Import"
 
 oildata should now be listed as one of the global variables.
 
+Define these three variables:
+
 datasetname <- oildata
 resvarname <- 'OilPrices'
 expvarnames <- c('SP500', 'RigCount', 'API', 'Field_Production', 'RefinerNetInput',
 'OperableCapacity', 'Imports', 'StocksExcludingSPR')
+
+Now, set the function with the arguments defined from above.
+
 olr(datasetname, resvarname, expvarnames, adjr2 = TRUE)
 }
 }

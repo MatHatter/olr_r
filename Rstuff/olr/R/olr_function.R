@@ -6,26 +6,27 @@
 #' best fit statistical summary of either the greatest adjusted R-squared or R-squared term.
 #'
 #'
-#' Complimentary functions below follow this format: function(datasetname, resvarname, expvarnames) \cr \cr
-#' olrmodels: returns the list of models accompanied by the coefficients. After typing in olrmodels(datasetname, resvarname, expvarnames) put the number you want to see in the brackets on the right of the comma [,]. For example, olrmodels(datasetname, resvarname, expvarnames)[,1] \cr \cr
+#' Complimentary functions below follow the format: function(datasetname, resvarname, expvarnames) \cr \cr
+#' olrmodels: returns the list of models accompanied by the coefficients. After typing in \code{olrmodels(datasetname, resvarname, expvarnames)} type the desired summary number to the right of the comma in the brackets: \code{[,x]} where x equals the desired summary number. For example, \code{olrmodels(datasetname, resvarname, expvarnames)[,8]} \cr \cr
 #' olrformulas: returns the list of olr formulas \cr \cr
 #' olrformulasorder: returns the formulas with the predictors (dependent variables) in ascending order \cr \cr
 #' adjr2list: list of the adjusted R-squared terms \cr \cr
 #' r2list: list of the R-squared terms \cr \cr
 #'
-#' A Python version is available at <https://pypi.org/project/olr/>.
+#' \emph{A Python version is available at} <https://pypi.org/project/olr/>.
 #'
 #' @param datasetname is defined by the user and points to the name of the dataset that is being used.
 #' @param resvarname the response variable name defined as a string. For example. It represents a header in the data table.
 #' @param expvarnames is a variable that you must define as a list before your function. Place desired headers from the data table in here as a list.
-#' @param adjr2 adjr2 = TRUE means you want to return the regression summary for the maximum adjusted R-squared term. adjr2 = FALSE means you want to return the regression summary for the maximum R-squared term.
+#' @param adjr2 \code{adjr2 = TRUE} means you want to return the regression summary for the maximum adjusted R-squared term. \code{adjr2 = FALSE} means you want to return the regression summary for the maximum R-squared term.
 #' @keywords olr
-#' @return The regression summary for the adjusted R-squared or the R-squared, specified with TRUE or FALSE in the olr function.
+#' @return The regression summary for the adjusted R-squared or the R-squared, specified with \code{TRUE} or \code{FALSE} in the olr function.
 #' @examples
 #' \dontrun{
-#' For this example, 'Import Dataset' from this location: ../olr/insta/extdata
 #'
-#' Or use the function to find the location:
+#' #For this example, 'Import Dataset' from the location: ../olr/insta/extdata
+#'
+#' Or use this function to find the location:
 #' system.file("extdata", "oildata.csv", package = "olr", mustWork = TRUE)
 #'
 #' Go to "Environment" and go to "Import Dataset". Then choose "From Text (base)...".
@@ -34,12 +35,19 @@
 #'
 #' oildata should now be listed as one of the global variables.
 #'
+#' Define these three variables:
+#'
 #' datasetname <- oildata
 #' resvarname <- 'OilPrices'
 #' expvarnames <- c('SP500', 'RigCount', 'API', 'Field_Production', 'RefinerNetInput',
 #' 'OperableCapacity', 'Imports', 'StocksExcludingSPR')
+#'
+#' Now, set the function with the arguments defined from above.
+#'
 #' olr(datasetname, resvarname, expvarnames, adjr2 = TRUE)
 #' }
+#' @import plyr
+#' @import stats
 #' @importFrom utils combn
 #' @export
 olr <- function(datasetname, resvarname, expvarnames, adjr2 = TRUE){
@@ -77,6 +85,8 @@ olr <- function(datasetname, resvarname, expvarnames, adjr2 = TRUE){
 }
 
 #' @rdname olr
+#' @import plyr
+#' @import stats
 #' @importFrom utils combn
 #' @export
 olrmodels <- function(datasetname, resvarname, expvarnames){
@@ -88,11 +98,13 @@ olrmodels <- function(datasetname, resvarname, expvarnames){
   olrformulaorder <- olrformulas[order(unlist(olrformulas))]
   olrmodels <- lapply(olrformulas, function(x, data) eval(bquote(lm(.(x),data=datasetname))), data=datasetname)
   summarylist <- sapply(olrmodels, summary)
-  print("After typing in olrmodels(datasetname, resvarname, expvarnames) put the number you want to see in the brackets on the right of the comma [,]. For example, olrmodels(datasetname, resvarname, expvarnames)[,1]")
+  print("After typing in olrmodels(datasetname, resvarname, expvarnames) type the desired summary number to the right of the comma in the brackets: [,x] where x equals the desired summary number. For example, olrmodels(datasetname, resvarname, expvarnames)[,8]")
   print(summarylist)
 }
 
 #' @rdname olr
+#' @import plyr
+#' @import stats
 #' @importFrom utils combn
 #' @export
 olrformulas <- function(datasetname, resvarname, expvarnames){
@@ -106,6 +118,8 @@ olrformulas <- function(datasetname, resvarname, expvarnames){
 }
 
 #' @rdname olr
+#' @import plyr
+#' @import stats
 #' @importFrom utils combn
 #' @export
 olrformulaorder <- function(datasetname, resvarname, expvarnames){
@@ -120,6 +134,8 @@ olrformulaorder <- function(datasetname, resvarname, expvarnames){
 }
 
 #' @rdname olr
+#' @import plyr
+#' @import stats
 #' @importFrom utils combn
 #' @export
 adjr2list <- function(datasetname, resvarname, expvarnames){
@@ -139,6 +155,8 @@ adjr2list <- function(datasetname, resvarname, expvarnames){
 }
 
 #' @rdname olr
+#' @import plyr
+#' @import stats
 #' @importFrom utils combn
 #' @export
 r2list <- function(datasetname, resvarname, expvarnames){
