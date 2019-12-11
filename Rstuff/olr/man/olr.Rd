@@ -31,23 +31,23 @@ r2list(datasetname, resvarname, expvarnames)
 \item{adjr2}{\code{adjr2 = TRUE} means you want to return the regression summary for the maximum adjusted R-squared term. \code{adjr2 = FALSE} means you want to return the regression summary for the maximum R-squared term.}
 }
 \value{
-The regression summary for the adjusted R-squared or the R-squared, specified with \code{TRUE} or \code{FALSE} in the olr function.
+The regression summary for the adjusted R-squared or the R-squared, specified with \code{TRUE} or \code{FALSE} in the olr().
 }
 \description{
-The main function olr runs all of the possible linear regression equation combinations, which are all of the
-combinations of dependent variables respect to the independent variable. In essence, the olr function
-returns the best fit linear regression model. The user can prompt the olr function to either return the
+The main olr() runs all of the possible linear regression equation combinations, which are all of the
+combinations of dependent variables respect to the independent variable. In essence, the olr()
+returns the best fit linear regression model. The user can prompt the olr() to either return the
 best fit statistical summary of either the greatest adjusted R-squared or R-squared term.
 }
 \details{
 Complimentary functions below follow the format: function(datasetname, resvarname, expvarnames) \cr \cr
 olrmodels: returns the list of models accompanied by the coefficients. After typing in \code{olrmodels(datasetname, resvarname, expvarnames)} type the desired summary number to the right of the comma in the brackets: \code{[,x]} where x equals the desired summary number. For example, \code{olrmodels(datasetname, resvarname, expvarnames)[,8]} \cr \cr
-olrformulas: returns the list of olr formulas \cr \cr
+olrformulas: returns the list of olr() formulas \cr \cr
 olrformulasorder: returns the formulas with the predictors (dependent variables) in ascending order \cr \cr
 adjr2list: list of the adjusted R-squared terms \cr \cr
 r2list: list of the R-squared terms \cr \cr
 
-\emph{A Python version is available at} <https://pypi.org/project/olr/>.
+\emph{A 'Python' version is available at} <https://pypi.org/project/olr>.
 }
 \examples{
 \dontrun{
