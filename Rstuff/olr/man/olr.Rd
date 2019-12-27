@@ -9,24 +9,25 @@
 \alias{r2list}
 \title{olr: Optimal Linear Regression}
 \usage{
-olr(datasetname, resvarname, expvarnames, adjr2 = TRUE)
+olr(dataset, responseName = NULL, predictorNames = NULL,
+  adjr2 = TRUE)
 
-olrmodels(datasetname, resvarname, expvarnames)
+olrmodels(dataset, responseName = NULL, predictorNames = NULL)
 
-olrformulas(datasetname, resvarname, expvarnames)
+olrformulas(dataset, responseName = NULL, predictorNames = NULL)
 
-olrformulaorder(datasetname, resvarname, expvarnames)
+olrformulaorder(dataset, responseName = NULL, predictorNames = NULL)
 
-adjr2list(datasetname, resvarname, expvarnames)
+adjr2list(dataset, responseName = NULL, predictorNames = NULL)
 
-r2list(datasetname, resvarname, expvarnames)
+r2list(dataset, responseName = NULL, predictorNames = NULL)
 }
 \arguments{
-\item{datasetname}{is defined by the user and points to the name of the dataset that is being used.}
+\item{dataset}{is defined by the user and points to the name of the dataset that is being used.}
 
-\item{resvarname}{the response variable name defined as a string. For example. It represents a header in the data table.}
+\item{responseName}{the response variable name defined as a string. For example, it represents a header in the data table.}
 
-\item{expvarnames}{is a variable that you must define as a list before your function. Place desired headers from the data table in here as a list.}
+\item{predictorNames}{the predictor variable or variables that are the terms that are to be regressed against the \code{responseName}. Place desired headers from the \code{dataset} in here as a character vector.}
 
 \item{adjr2}{\code{adjr2 = TRUE} means you want to return the regression summary for the maximum adjusted R-squared term. \code{adjr2 = FALSE} means you want to return the regression summary for the maximum R-squared term.}
 }
@@ -40,8 +41,8 @@ returns the best fit linear regression model. The user can prompt the olr() to e
 best fit statistical summary of either the greatest adjusted R-squared or R-squared term.
 }
 \details{
-Complimentary functions below follow the format: function(datasetname, resvarname, expvarnames) \cr \cr
-olrmodels: returns the list of models accompanied by the coefficients. After typing in \code{olrmodels(datasetname, resvarname, expvarnames)} type the desired summary number to the right of the comma in the brackets: \code{[,x]} where x equals the desired summary number. For example, \code{olrmodels(datasetname, resvarname, expvarnames)[,8]} \cr \cr
+Complimentary functions below follow the format: function(dataset, responseName, predictorNames) \cr \cr
+olrmodels: returns the list of models accompanied by the coefficients. After typing in \code{olrmodels(dataset, responseName, predictorNames)} type the desired summary number to the right of the comma in the brackets: \code{[,x]} where x equals the desired summary number. For example, \code{olrmodels(dataset, responseName, predictorNames)[,8]} \cr \cr
 olrformulas: returns the list of olr() formulas \cr \cr
 olrformulasorder: returns the formulas with the predictors (dependent variables) in ascending order \cr \cr
 adjr2list: list of the adjusted R-squared terms \cr \cr
@@ -50,29 +51,14 @@ r2list: list of the R-squared terms \cr \cr
 \emph{A 'Python' version is available at} <https://pypi.org/project/olr>.
 }
 \examples{
-\dontrun{
+file <- system.file("extdata", "oildata.csv", package = "olr", mustWork = TRUE)
+oildata <- read.csv(file, header = TRUE)
 
-#For this example, 'Import Dataset' from the location: ../olr/insta/extdata
+dataset <- oildata
+responseName <- 'OilPrices'
+predictorNames <- c('SP500', 'RigCount', 'API', 'Field_Production', 'OperableCapacity', 'Imports')
 
-Or use this function to find the location:
-system.file("extdata", "oildata.csv", package = "olr", mustWork = TRUE)
+olr(dataset, responseName, predictorNames, adjr2 = TRUE)
 
-Go to "Environment" and go to "Import Dataset". Then choose "From Text (base)...".
-Afterwards, find the file in the directory. After clicking the file, choose "Yes" for "Headers"
-Then, click on "Import"
-
-oildata should now be listed as one of the global variables.
-
-Define these three variables:
-
-datasetname <- oildata
-resvarname <- 'OilPrices'
-expvarnames <- c('SP500', 'RigCount', 'API', 'Field_Production', 'RefinerNetInput',
-'OperableCapacity', 'Imports', 'StocksExcludingSPR')
-
-Now, set the function with the arguments defined from above.
-
-olr(datasetname, resvarname, expvarnames, adjr2 = TRUE)
-}
 }
 \keyword{olr}
