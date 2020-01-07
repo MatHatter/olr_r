@@ -37,19 +37,19 @@ The regression summary for the adjusted R-squared or the R-squared, specified wi
 \description{
 The main olr() runs all of the possible linear regression equation combinations, which are all of the
 combinations of dependent variables respect to the independent variable. In essence, the olr()
-returns the best fit linear regression model. The user can prompt the olr() to either return the
-best fit statistical summary of either the greatest adjusted R-squared or R-squared term.
-Adding an additional explanatory variable to the regression equation increases the R-squared or
-adjusted R-squared terms even if the variable is not 'significant'. Thus, adjusted R-squared was
-preferred, but this was developed to eliminate that conundrum.
+returns the best fit linear regression model. The user can prompt the olr() to return either the
+best fit statistical summary of either the greatest adjusted R-squared, or the greatest R-squared term.
+R-squared increases with the addition of an explanatory variable whether it is 'significant' or not,
+thus this was developed to eliminate that conundrum. Adjusted R-squared is preferred to overcome this
+phenomenon, but each combination will still produce different results and this will return the best one.
 }
 \details{
 Complimentary functions below follow the format: function(dataset, responseName = NULL, predictorNames = NULL) \cr \cr
-olrmodels: returns the list of models accompanied by the coefficients. After typing in \code{olrmodels(dataset, responseName, predictorNames)} type the desired summary number to the right of the comma in the brackets: \code{[,x]} where x equals the desired summary number. For example, \code{olrmodels(dataset, responseName, predictorNames)[,8]} \cr \cr
-olrformulas: returns the list of olr() formulas \cr \cr
-olrformulasorder: returns the formulas with the predictors (dependent variables) in ascending order \cr \cr
-adjr2list: list of the adjusted R-squared terms \cr \cr
-r2list: list of the R-squared terms \cr \cr
+\strong{olrmodels:} returns the list of models accompanied by the coefficients. After typing in \code{olrmodels(dataset, responseName, predictorNames)} type the desired summary number to the right of the comma in the brackets: \code{[,x]} where x equals the desired summary number. For example, \code{olrmodels(dataset, responseName, predictorNames)[,8]} \cr \cr
+\strong{olrformulas:} returns the list of olr() formulas \cr \cr
+\strong{olrformulasorder:} returns the formulas with the predictors (dependent variables) in ascending order \cr \cr
+\strong{adjr2list:} list of the adjusted R-squared terms \cr \cr
+\strong{r2list:} list of the R-squared terms \cr \cr
 
 When \code{responseName} and \code{predictorNames} are \code{NULL}, then the first column in the \code{dataset} is set as the \code{responseName} and the remaining columns are the \code{predictorNames}.
 
