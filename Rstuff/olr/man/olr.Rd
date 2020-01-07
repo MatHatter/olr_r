@@ -29,7 +29,7 @@ r2list(dataset, responseName = NULL, predictorNames = NULL)
 
 \item{predictorNames}{the predictor variable or variables that are the terms that are to be regressed against the \code{responseName}. Place desired headers from the \code{dataset} in here as a character vector.}
 
-\item{adjr2}{\code{adjr2 = TRUE} means you want to return the regression summary for the maximum adjusted R-squared term. \code{adjr2 = FALSE} means you want to return the regression summary for the maximum R-squared term.}
+\item{adjr2}{\code{adjr2 = TRUE} returns the regression summary for the maximum adjusted R-squared term. \code{adjr2 = FALSE} returns the regression summary for the maximum R-squared term.}
 }
 \value{
 The regression summary for the adjusted R-squared or the R-squared, specified with \code{TRUE} or \code{FALSE} in the olr().
@@ -39,14 +39,19 @@ The main olr() runs all of the possible linear regression equation combinations,
 combinations of dependent variables respect to the independent variable. In essence, the olr()
 returns the best fit linear regression model. The user can prompt the olr() to either return the
 best fit statistical summary of either the greatest adjusted R-squared or R-squared term.
+Adding an additional explanatory variable to the regression equation increases the R-squared or
+adjusted R-squared terms even if the variable is not 'significant'. Thus, adjusted R-squared was
+preferred, but this was developed to eliminate that conundrum.
 }
 \details{
-Complimentary functions below follow the format: function(dataset, responseName, predictorNames) \cr \cr
+Complimentary functions below follow the format: function(dataset, responseName = NULL, predictorNames = NULL) \cr \cr
 olrmodels: returns the list of models accompanied by the coefficients. After typing in \code{olrmodels(dataset, responseName, predictorNames)} type the desired summary number to the right of the comma in the brackets: \code{[,x]} where x equals the desired summary number. For example, \code{olrmodels(dataset, responseName, predictorNames)[,8]} \cr \cr
 olrformulas: returns the list of olr() formulas \cr \cr
 olrformulasorder: returns the formulas with the predictors (dependent variables) in ascending order \cr \cr
 adjr2list: list of the adjusted R-squared terms \cr \cr
 r2list: list of the R-squared terms \cr \cr
+
+When \code{responseName} and \code{predictorNames} are \code{NULL}, then the first column in the \code{dataset} is set as the \code{responseName} and the remaining columns are the \code{predictorNames}.
 
 \emph{A 'Python' version is available at} <https://pypi.org/project/olr>.
 }

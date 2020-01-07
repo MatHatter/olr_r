@@ -4,21 +4,26 @@
 #' combinations of dependent variables respect to the independent variable. In essence, the olr()
 #' returns the best fit linear regression model. The user can prompt the olr() to either return the
 #' best fit statistical summary of either the greatest adjusted R-squared or R-squared term.
+#' Adding an additional explanatory variable to the regression equation increases the R-squared or
+#' adjusted R-squared terms even if the variable is not 'significant'. Thus, adjusted R-squared was
+#' preferred, and this was developed in order to eliminate that conundrum.
 #'
 #'
-#' Complimentary functions below follow the format: function(dataset, responseName, predictorNames) \cr \cr
+#' Complimentary functions below follow the format: function(dataset, responseName = NULL, predictorNames = NULL) \cr \cr
 #' olrmodels: returns the list of models accompanied by the coefficients. After typing in \code{olrmodels(dataset, responseName, predictorNames)} type the desired summary number to the right of the comma in the brackets: \code{[,x]} where x equals the desired summary number. For example, \code{olrmodels(dataset, responseName, predictorNames)[,8]} \cr \cr
 #' olrformulas: returns the list of olr() formulas \cr \cr
 #' olrformulasorder: returns the formulas with the predictors (dependent variables) in ascending order \cr \cr
 #' adjr2list: list of the adjusted R-squared terms \cr \cr
 #' r2list: list of the R-squared terms \cr \cr
 #'
+#' When \code{responseName} and \code{predictorNames} are \code{NULL}, then the first column in the \code{dataset} is set as the \code{responseName} and the remaining columns are the \code{predictorNames}.
+#'
 #' \emph{A 'Python' version is available at} <https://pypi.org/project/olr>.
 #'
 #' @param dataset is defined by the user and points to the name of the dataset that is being used.
 #' @param responseName the response variable name defined as a string. For example, it represents a header in the data table.
 #' @param predictorNames the predictor variable or variables that are the terms that are to be regressed against the \code{responseName}. Place desired headers from the \code{dataset} in here as a character vector.
-#' @param adjr2 \code{adjr2 = TRUE} means you want to return the regression summary for the maximum adjusted R-squared term. \code{adjr2 = FALSE} means you want to return the regression summary for the maximum R-squared term.
+#' @param adjr2 \code{adjr2 = TRUE} returns the regression summary for the maximum adjusted R-squared term. \code{adjr2 = FALSE} returns the regression summary for the maximum R-squared term.
 #' @keywords olr
 #' @return The regression summary for the adjusted R-squared or the R-squared, specified with \code{TRUE} or \code{FALSE} in the olr().
 #' @examples
@@ -37,39 +42,10 @@
 #' @export
 olr <- function(dataset, responseName=NULL, predictorNames=NULL, adjr2 = TRUE){
 
-  combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
-  combination_mat <- unlist (lapply (1:length (colnames(dataset[-1])), combine, colnames(dataset[-1])))
-  combination_mat  <- as.matrix(combination_mat)
-  olrformulas <- lapply(combination_mat, function(v) paste(paste(colnames(dataset[1])),'~', paste(v,collapse = '')))
-  olrformulasorder <- olrformulas[order(unlist(olrformulas))]
-  olrmodels <- lapply(olrformulas, function(x, data) eval(bquote(lm(.(x),data=dataset))), data=dataset)
-  summarylist <- sapply(olrmodels, summary)
-
-  if (adjr2 == "TRUE" || adjr2 == "True" || adjr2 == "true" || adjr2 == TRUE || adjr2 == T){
-
-    #adj. r^2
-
-    maxadjr2 <- max(sapply(summarylist[9,], max))
-    adjr2max_match <- match(maxadjr2, summarylist[9,])
-
-    olrsummary_adj_r <- summarylist[,adjr2max_match]
-    print(olrsummary_adj_r) # returns the summary for the max adj. r sqd
-
-  } else if (adjr2 == "FALSE" || adjr2 == "False" || adjr2 == "false" || adjr2 == FALSE || adjr2 == F) {
-
-    #r^2
-
-    maxr2 <- max(sapply(summarylist[8,], max))
-    r2max_match <- match(maxr2, summarylist[8,])
-
-    olrsummary_r <- summarylist[,r2max_match]
-    print(olrsummary_r) # returns the summary for the max r sqd
-
+  if ((is.null(responseName) == TRUE) & (is.null(predictorNames) == TRUE)) {
+    predictorNames = colnames(dataset[-1])
+    responseName = colnames(dataset[1])
   }
-
-
-  else if ((is.null(responseName) == FALSE) & (is.null(predictorNames) == FALSE)) {
-
 
   combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
   combination_mat <- unlist (lapply (1:length (predictorNames), combine, predictorNames))
@@ -79,7 +55,7 @@ olr <- function(dataset, responseName=NULL, predictorNames=NULL, adjr2 = TRUE){
   olrmodels <- lapply(olrformulas, function(x, data) eval(bquote(lm(.(x),data=dataset))), data=dataset)
   summarylist <- sapply(olrmodels, summary)
 
-  if (adjr2 == "TRUE" || adjr2 == "True" || adjr2 == "true" || adjr2 == TRUE || adjr2 == T){
+  if (adjr2 == "TRUE" ||   adjr2 == "True" || adjr2 == "true" || adjr2 == TRUE || adjr2 == T){
 
     #adj. r^2
 
@@ -100,10 +76,7 @@ olr <- function(dataset, responseName=NULL, predictorNames=NULL, adjr2 = TRUE){
     print(olrsummary_r) # returns the summary for the max r sqd
 
   }
-
 }
-}
-
 
 #' @rdname olr
 #' @import plyr
@@ -112,18 +85,10 @@ olr <- function(dataset, responseName=NULL, predictorNames=NULL, adjr2 = TRUE){
 #' @export
 olrmodels <- function(dataset, responseName = NULL, predictorNames = NULL){
 
-  combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
-  combination_mat <- unlist (lapply (1:length (colnames(dataset[-1])), combine, colnames(dataset[-1])))
-  combination_mat  <- as.matrix(combination_mat)
-  olrformulas <- lapply(combination_mat, function(v) paste(paste(colnames(dataset[1])),'~', paste(v,collapse = '')))
-  olrformulaorder <- olrformulas[order(unlist(olrformulas))]
-  olrmodels <- lapply(olrformulas, function(x, data) eval(bquote(lm(.(x),data=dataset))), data=dataset)
-  summarylist <- sapply(olrmodels, summary)
-  print("After typing in olrmodels(dataset, responseName, predictorNames) or olrmodels(dataset) type the desired summary number to the right of the comma in the brackets: [,x] where x equals the desired summary number. For example, olrmodels(dataset, responseName, predictorNames)[,8] or olrmodels(dataset)[,8]. There seems to be a limit for the number of predictor variables for this function, thus too many variables may produce a NULL response where there 'should' be a model printed after the word $call. The model is shown in the example olrmodels(dataset, responseName, predictorNames)[,8], but not in olrmodels(dataset)[,8] because the latter has a more column names (not every column name was listed in predictorNames).")
-  print(summarylist)
-
-  if ((is.null(responseName) == FALSE) & (is.null(predictorNames) == FALSE)) {
-
+  if ((is.null(responseName) == TRUE) & (is.null(predictorNames) == TRUE)) {
+    predictorNames = colnames(dataset[-1])
+    responseName = colnames(dataset[1])
+  }
     combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
     combination_mat <- unlist (lapply (1:length (predictorNames), combine, predictorNames))
     combination_mat  <- as.matrix(combination_mat)
@@ -135,7 +100,7 @@ olrmodels <- function(dataset, responseName = NULL, predictorNames = NULL){
     print(summarylist)
 
 }
-}
+
 #' @rdname olr
 #' @import plyr
 #' @import stats
@@ -143,20 +108,16 @@ olrmodels <- function(dataset, responseName = NULL, predictorNames = NULL){
 #' @export
 olrformulas <- function(dataset, responseName = NULL, predictorNames = NULL){
 
-  combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
-  combination_mat <- unlist (lapply (1:length (colnames(dataset[-1])), combine, colnames(dataset[-1])))
-  combination_mat  <- as.matrix(combination_mat)
-  olrformulas <- lapply(combination_mat, function(v) paste(paste(colnames(dataset[1]),'~', paste(v,collapse = ''))))
-  print(olrformulas)
-
-  if ((is.null(responseName) == FALSE) & (is.null(predictorNames) == FALSE)) {
-
+  if ((is.null(responseName) == TRUE) & (is.null(predictorNames) == TRUE)) {
+    predictorNames = colnames(dataset[-1])
+    responseName = colnames(dataset[1])
+  }
     combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
     combination_mat <- unlist (lapply (1:length (predictorNames), combine, predictorNames))
     combination_mat  <- as.matrix(combination_mat)
     olrformulas <- lapply(combination_mat, function(v) paste(paste(responseName),'~', paste(v,collapse = '')))
     print(olrformulas)
-  }
+
 }
 
 #' @rdname olr
@@ -166,14 +127,10 @@ olrformulas <- function(dataset, responseName = NULL, predictorNames = NULL){
 #' @export
 olrformulaorder <- function(dataset, responseName = NULL, predictorNames = NULL){
 
-  combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
-  combination_mat <- unlist (lapply (1:length (colnames(dataset[-1])), combine, colnames(dataset[-1])))
-  combination_mat  <- as.matrix(combination_mat)
-  olrformulas <- lapply(combination_mat, function(v) paste(paste(colnames(dataset[1])),'~', paste(v,collapse = '')))
-  olrformulaorder <- olrformulas[order(unlist(olrformulas))]
-  print(olrformulaorder)
-
-  if ((is.null(responseName) == FALSE) & (is.null(predictorNames) == FALSE)) {
+  if ((is.null(responseName) == TRUE) & (is.null(predictorNames) == TRUE)) {
+    predictorNames = colnames(dataset[-1])
+    responseName = colnames(dataset[1])
+  }
 
     combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
     combination_mat <- unlist (lapply (1:length (predictorNames), combine, predictorNames))
@@ -183,7 +140,7 @@ olrformulaorder <- function(dataset, responseName = NULL, predictorNames = NULL)
     print(olrformulaorder)
 
 }
-}
+
 #' @rdname olr
 #' @import plyr
 #' @import stats
@@ -191,19 +148,10 @@ olrformulaorder <- function(dataset, responseName = NULL, predictorNames = NULL)
 #' @export
 adjr2list <- function(dataset, responseName = NULL, predictorNames = NULL){
 
-  combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
-  combination_mat <- unlist (lapply (1:length (colnames(dataset[-1])), combine, colnames(dataset[-1])))
-  combination_mat  <- as.matrix(combination_mat)
-  olrformulas <- lapply(combination_mat, function(v) paste(paste(colnames(dataset[1])),'~', paste(v,collapse = '')))
-  olrformulaorder <- olrformulas[order(unlist(olrformulas))]
-  olrmodels <- lapply(olrformulas, function(x, data) eval(bquote(lm(.(x),data=dataset))), data=dataset)
-  summarylist <- sapply(olrmodels, summary)
-
-  #adj. r^2
-  adjr2list <- sapply(summarylist[9,], max)
-  print(adjr2list)
-
-  if ((is.null(responseName) == FALSE) & (is.null(predictorNames) == FALSE)) {
+  if ((is.null(responseName) == TRUE) & (is.null(predictorNames) == TRUE)) {
+    predictorNames = colnames(dataset[-1])
+    responseName = colnames(dataset[1])
+  }
 
     combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
     combination_mat <- unlist (lapply (1:length (predictorNames), combine, predictorNames))
@@ -217,9 +165,8 @@ adjr2list <- function(dataset, responseName = NULL, predictorNames = NULL){
     adjr2list <- sapply(summarylist[9,], max)
     print(adjr2list)
 
+}
 
-}
-}
 #' @rdname olr
 #' @import plyr
 #' @import stats
@@ -227,19 +174,10 @@ adjr2list <- function(dataset, responseName = NULL, predictorNames = NULL){
 #' @export
 r2list <- function(dataset, responseName = NULL, predictorNames = NULL){
 
-  combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
-  combination_mat <- unlist (lapply (1:length (colnames(dataset[-1])), combine, colnames(dataset[-1])))
-  combination_mat  <- as.matrix(combination_mat)
-  olrformulas <- lapply(combination_mat, function(v) paste(paste(colnames(dataset[1])),'~', paste(v,collapse = '')))
-  olrformulaorder <- olrformulas[order(unlist(olrformulas))]
-  olrmodels <- lapply(olrformulas, function(x, data) eval(bquote(lm(.(x),data=dataset))), data=dataset)
-  summarylist <- sapply(olrmodels, summary)
-
-  #r^2
-  r2list <- sapply(summarylist[8,], max)
-  print(r2list)
-
-  if ((is.null(responseName) == FALSE) & (is.null(predictorNames) == FALSE)) {
+  if ((is.null(responseName) == TRUE) & (is.null(predictorNames) == TRUE)) {
+    predictorNames = colnames(dataset[-1])
+    responseName = colnames(dataset[1])
+  }
 
   combine <- function (x, y) {combn (y, x, paste, collapse = '+')}
   combination_mat <- unlist (lapply (1:length (predictorNames), combine, predictorNames))
@@ -254,4 +192,4 @@ r2list <- function(dataset, responseName = NULL, predictorNames = NULL){
   print(r2list)
 
 }
-}
+
