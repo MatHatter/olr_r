@@ -1,15 +1,12 @@
-## ----load-htmltools, include=FALSE--------------------------------------------
-library(htmltools)
-
 ## ----html-style, results='asis', echo=FALSE-----------------------------------
-htmltools::tags$style(HTML("
+htmltools::HTML("
 pre code {
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-x: auto;
   font-size: 90%;
 }
-"))
+")
 
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)

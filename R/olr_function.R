@@ -35,6 +35,7 @@
 #' @keywords olr optimal linear regression linear-model model model-selection adjusted r-squared combination
 #' @return Returns the best-fitting linear model object based on either adjusted R-squared (default) or R-squared. Call \code{summary()} on the result to view full regression statistics.
 #' @examples
+#' # Please allow time for rendering after clicking "Run Examples"
 #' crudeoildata <- read.csv(system.file("extdata", "crudeoildata.csv", package = "olr"))
 #' dataset <- crudeoildata[, -1]
 #' 

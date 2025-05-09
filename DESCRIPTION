@@ -8,8 +8,8 @@ License: GPL-3
 Encoding: UTF-8
 Depends: R (>= 2.10)
 LazyData: true
-Imports: plyr, utils, stats, readxl
-Suggests: knitr, rmarkdown
+Imports: plyr, utils, stats, readxl, htmltools
+Suggests: knitr, rmarkdown, ggplot2
 VignetteBuilder: knitr
 RoxygenNote: 7.2.3
 URL: https://github.com/MatHatter/olr_r, https://pypi.org/project/olr/

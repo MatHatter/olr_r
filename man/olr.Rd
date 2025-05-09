@@ -63,6 +63,7 @@ When \code{responseName} and \code{predictorNames} are \code{NULL}, the function
 Otherwise, you can utilize \strong{load_custom_data(data = "crudeoildata.csv", custom_path = NULL, exclude_first_column = TRUE)}, a custom function that allows you to load the data (crudeoildata) automatically without the first column.
 }
 \examples{
+# Please allow time for rendering after clicking "Run Examples"
 crudeoildata <- read.csv(system.file("extdata", "crudeoildata.csv", package = "olr"))
 dataset <- crudeoildata[, -1]
 

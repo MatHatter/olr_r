@@ -50,4 +50,5 @@ df <- load_custom_data(
 # Load default custom data and exclude the first column
 df <- load_custom_data(exclude_first_column = TRUE)
 }
+
 }

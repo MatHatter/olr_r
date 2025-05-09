@@ -33,10 +33,12 @@
 #' # Load default custom data and exclude the first column
 #' df <- load_custom_data(exclude_first_column = TRUE)
 #' }
+#' 
+#' @importFrom htmltools HTML
 #' @importFrom readxl read_excel
 #' @importFrom utils read.csv read.delim read.table
-#'
 #' @export
+#' @name load_custom_data
 load_custom_data <- function(data = "crudeoildata.csv", custom_path = NULL, exclude_first_column = FALSE) {
   # Determine file path
   if (is.null(custom_path)) {
