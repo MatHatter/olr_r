@@ -1,0 +1,157 @@
+
+---
+title: "Getting Started with olr: Optimal Linear Regression"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with olr: Optimal Linear Regression}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r load-htmltools, include=FALSE}
+library(htmltools)
+```
+
+
+```{r html-style, results='asis', echo=FALSE}
+htmltools::tags$style(HTML("
+pre code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+  font-size: 90%;
+}
+"))
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(olr)
+library(ggplot2)
+```
+
+## 📦 Introduction
+
+The `olr` package provides a systematic way to identify the best linear regression model by testing **all combinations** of predictor variables. You can choose to optimize based on either **R-squared** or **adjusted R-squared**.
+
+---
+
+## 📊 Load Example Dataset
+
+```{r}
+# Load data
+crudeoildata <- read.csv(system.file("extdata", "crudeoildata.csv", package = "olr"))
+dataset <- crudeoildata[, -1]
+
+# Define variables
+responseName <- 'CrudeOil'
+predictorNames <- c('RigCount', 'API', 'FieldProduction', 'RefinerNetInput',
+                    'OperableCapacity', 'Imports', 'StocksExcludingSPR',
+                    'NonCommercialLong', 'NonCommercialShort',
+                    'CommercialLong', 'CommercialShort', 'OpenInterest')
+```
+
+---
+
+## 🔎 Run OLR Models
+
+```{r}
+# Full model using R-squared
+model_r2 <- olr(dataset, responseName, predictorNames, adjr2 = FALSE)
+
+# Adjusted R-squared model
+model_adjr2 <- olr(dataset, responseName, predictorNames, adjr2 = TRUE)
+```
+
+---
+
+## 📈 Visual Comparison of Model Fits
+
+```{r plot-r2-line, fig.align="center", fig.width=6.3, fig.height=4.5, out.width='99%'}
+# Actual values
+actual <- dataset[[responseName]]
+fitted_r2 <- model_r2$fitted.values
+fitted_adjr2 <- model_adjr2$fitted.values
+
+# Data frames for ggplot
+plot_data <- data.frame(
+  Index = 1:length(actual),
+  Actual = actual,
+  R2_Fitted = fitted_r2,
+  AdjR2_Fitted = fitted_adjr2
+)
+
+# Plot both fits
+ggplot(plot_data, aes(x = Index)) +
+  geom_line(aes(y = Actual), color = "black", size = 1, linetype = "dashed") +
+  geom_line(aes(y = R2_Fitted), color = "steelblue", size = 1) +
+  labs(
+    title = "Full Model (R-squared): Actual vs Fitted Values",
+    subtitle = "Observation Index used in place of dates (parsed from original dataset)",
+    x = "Observation Index",
+    y = "CrudeOil % Change"
+  ) +
+  theme_minimal()
+```
+
+```{r plot-adjr2-line, fig.align="center", fig.width=6.3, fig.height=4.5, out.width='99%'}
+ggplot(plot_data, aes(x = Index)) +
+  geom_line(aes(y = Actual), color = "black", size = 1, linetype = "dashed") +
+  geom_line(aes(y = AdjR2_Fitted), color = "limegreen", size = 1.1) +
+  labs(
+    title = "Optimal Model (Adjusted R-squared): Actual vs Fitted Values",
+    subtitle = "Observation Index used in place of dates (parsed from original dataset)",
+    x = "Observation Index",
+    y = "CrudeOil % Change"
+  )+
+  theme_minimal() +
+  theme(plot.background = element_rect(color = "limegreen", size = 2))
+```
+
+---
+
+## 📊 Model Comparison Summary Table
+
+| Metric                    | adjr2 = FALSE (All 12 Predictors) | adjr2 = TRUE (Best Subset of 7 Predictors)  |
+|---------------------------|-----------------------------------|---------------------------------------------|
+| **Adjusted R-squared**    | 0.6145                            | **0.6531** ✅ (higher is better)            |
+| **Multiple R-squared**    | 0.7018                            | 0.699                                       |
+| **Residual Std. Error**   | 0.02388                           | **0.02265** ✅ (lower is better)            |
+| **F-statistic (p-value)** | 8.042 (1.88e-07)                  | **15.26 (3.99e-10)** ✅ (stronger model)     |
+| **Model Complexity**      | 12 predictors                     | **7 predictors** ✅ (simpler, more robust)   |
+| **Significant Coeffs**    | 4                                 | **6** ✅ (more signal, less noise)           |
+| **R² Difference**         | —                                 | ~0.003 ❗ (negligible)                       |
+
+---
+
+## ✅ Best Practice Tips
+
+- The `olr()` function **automates model selection** by testing every valid predictor combination.
+- Use `adjr2 = TRUE` to prioritize models that **balance accuracy and parsimony**.
+- A small drop in raw R² is acceptable if the adjusted R² is higher — it means **fewer variables**, better generalization.
+
+---
+
+## 📌 Summary
+
+The adjusted R² model outperformed the full model on:
+- Adjusted R²
+- F-statistic
+- Residual error
+- Model simplicity
+
+👉 Use adjusted R² (`adjr2 = TRUE`) in practice to **avoid overfitting** and ensure interpretability.
+
+<div style="height:50px;"></div>
+
+---
+
+<p style="text-align:center; font-size:90%;">
+  Created by <strong>Mathew Fok</strong> • Author of the <code>olr</code> package  
+  <br>
+  Contact: <a href="mailto:quiksilver67213@yahoo.com">quiksilver67213@yahoo.com</a>
+</p>
+
+
+
