@@ -9,15 +9,16 @@ vignette: >
 
 ---
 
-
 ```{r html-style, results='asis', echo=FALSE}
-htmltools::HTML("
+cat("
+<style>
 pre code {
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-x: auto;
   font-size: 90%;
 }
+</style>
 ")
 ```
 
@@ -137,6 +138,7 @@ The adjusted R² model outperformed the full model on:
 - F-statistic
 - Residual error
 - Model simplicity
+- # of significant coefficients
 
 👉 Use adjusted R² (`adjr2 = TRUE`) in practice to **avoid overfitting** and ensure interpretability.
 
